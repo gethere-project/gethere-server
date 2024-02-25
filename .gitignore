@@ -1,0 +1,16 @@
+# VSCode
+/.vscode/
+
+# Jetbrains IDEs
+/.idea/
+
+# Rust
+/target/
+/run/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Other
+/.env

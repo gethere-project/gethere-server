@@ -1,0 +1,13 @@
+[package]
+name = "gethere_server"
+version = "0.1.0"
+license = "GPL-3.0-only"
+authors = ["Krystian Wiecheć <krystian.wiechec.pub@krystejj.me>"]
+homepage = "https://github.com/krystejj/gethere-server"
+repository = "https://github.com/krystejj/gethere-server"
+edition = "2021"
+publish = false
+
+[dependencies]
+actix-web = "4.5.1"
+actix-cors = "0.7.0"
