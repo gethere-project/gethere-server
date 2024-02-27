@@ -2,7 +2,11 @@
 name = "gethere_server"
 version = "0.1.0"
 license = "GPL-3.0-only"
-authors = ["Krystian Wiecheć <krystian.wiechec.pub@krystejj.me>"]
+description = "A backend for public transport app. Part of the gethere project."
+authors = [
+  "Krystian Wiecheć <krystian.wiechec.pub@krystejj.me>",
+  "Mykhailo Diatchenko",
+]
 homepage = "https://github.com/krystejj/gethere-server"
 repository = "https://github.com/krystejj/gethere-server"
 edition = "2021"
@@ -11,8 +15,8 @@ publish = false
 [dependencies]
 actix-web = "4.5.1"
 actix-cors = "0.7.0"
+reqwest = { version = "0.11.24", features = ["json"] }
 
+dotenv = "0.15.0"
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
-dotenv = "0.15.0"
-reqwest = { version = "0.11.24", features = ["json"] }
