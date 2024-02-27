@@ -30,7 +30,7 @@ async fn main() -> std::io::Result<()> {
     .await
     .unwrap();
 
-  let mut stops: Vec<Value> = vec![];
+  let mut prestops: Vec<Value> = vec![];
 
   if let Value::Object(data) = _data {
     if !data.contains_key(&String::from("result")) {
@@ -41,13 +41,18 @@ async fn main() -> std::io::Result<()> {
       for (i, raw_value) in values.iter().enumerate() {
         if let Value::Object(value) = raw_value {
           if let Some(Value::Array(values)) = value.get("values") {
-            stops.insert(i, Value::Object(Map::new()));
+            prestops.insert(i, Value::Object(Map::new()));
             for raw_row in values {
               if let Value::Object(row) = raw_row {
-                stops.get_mut(i).unwrap().as_object_mut().unwrap().insert(
-                  String::from(row.get(&String::from("key")).unwrap().as_str().unwrap()),
-                  row.get(&String::from("value")).unwrap().to_owned(),
-                );
+                prestops
+                  .get_mut(i)
+                  .unwrap()
+                  .as_object_mut()
+                  .unwrap()
+                  .insert(
+                    String::from(row.get(&String::from("key")).unwrap().as_str().unwrap()),
+                    row.get(&String::from("value")).unwrap().to_owned(),
+                  );
               }
             }
           }
@@ -60,6 +65,65 @@ async fn main() -> std::io::Result<()> {
     }
   } else {
     panic!("The request failed");
+  }
+
+  let mut stops: Vec<app_state::Stop> = vec![];
+
+  for raw_stop in prestops {
+    if let Value::Object(stop) = raw_stop {
+      let n_stop = app_state::Stop {
+        id: stop
+          .get(&String::from("zespol"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .parse::<i32>()
+          .unwrap_or(69420) as u32,
+        name: stop
+          .get(&String::from("nazwa_zespolu"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .to_string(),
+        discriminator: stop
+          .get(&String::from("slupek"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .parse::<u8>()
+          .unwrap(),
+        direction: stop
+          .get(&String::from("kierunek"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .to_string(),
+        latitude: stop
+          .get(&String::from("szer_geo"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .parse::<f64>()
+          .unwrap(),
+        longtitude: stop
+          .get(&String::from("dlug_geo"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .parse::<f64>()
+          .unwrap(),
+        street_id: stop
+          .get(&String::from("id_ulicy"))
+          .unwrap()
+          .as_str()
+          .unwrap()
+          .parse::<u32>()
+          .unwrap(),
+      };
+      stops.push(n_stop);
+    } else {
+      panic!("OBJECT ERROR 2");
+    }
   }
 
   let state = web::Data::new(State {
