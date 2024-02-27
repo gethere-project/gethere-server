@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::sync::Mutex;
 #[derive(Serialize)]
 pub struct State {
-  pub stops: Mutex<Vec<Stop>>,
+  pub stops: Mutex<Vec<serde_json::Value>>,
 }
 
 #[derive(Serialize)]

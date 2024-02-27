@@ -14,6 +14,6 @@ pub async fn status(_: Data<State>) -> Result<impl Responder> {
 }
 
 #[get("/stops")]
-pub async fn stops(data: Data<State>) -> Result<impl Responder> {
-  Ok(Json(json!(*data.stops.lock().unwrap())))
+pub async fn stops(data: Data<State>) -> impl Responder {
+  Json(json!(*data.stops.lock().unwrap()))
 }
